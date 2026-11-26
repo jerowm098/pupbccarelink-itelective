@@ -1,0 +1,44 @@
+<!-- Consultation Form (also used for emergency encounters). Printed inside layout.html. Placeholders are listed in README.md.
+     Follows the clinic's CONSULTATION-FORM.docx: labels with the answer on a line. Every field is always printed;
+     a field with no value keeps its blank line so it can be filled in by hand. -->
+<h1>{{document_title}}</h1>
+
+<div class="field"><span class="label">Date:</span><span class="value">{{visit_datetime}}</span></div>
+<div class="row">
+  <div class="field"><span class="label">Name:</span><span class="value">{{student_name}}</span></div>
+  <div class="field short"><span class="label">Age:</span><span class="value">{{student_age}}</span></div>
+</div>
+<div class="field"><span class="label">Address:</span><span class="value">{{student_address}}</span></div>
+<div class="row">
+  <div class="field"><span class="label">Course &amp; Year:</span><span class="value">{{student_program}}</span></div>
+  <div class="field short"><span class="label">Contact #:</span><span class="value">{{student_contact}}</span></div>
+</div>
+<div class="row">
+  <div class="field"><span class="label">Contact person in case of emergency:</span><span class="value">{{emergency_person}}</span></div>
+  <div class="field short"><span class="label">Relationship:</span><span class="value">{{emergency_relationship}}</span></div>
+</div>
+<div class="field"><span class="label">Emergency Contact #:</span><span class="value">{{emergency_contact}}</span></div>
+
+<div class="gap"></div>
+<div class="field"><span class="label">{{^is_emergency}}CHIEF COMPLAINT:{{/is_emergency}}{{#is_emergency}}REASON:{{/is_emergency}}</span><span class="value">{{complaint}}</span></div>
+<div class="field"><span class="label">{{^is_emergency}}DIAGNOSIS:{{/is_emergency}}{{#is_emergency}}ASSESSMENT:{{/is_emergency}}</span><span class="value">{{diagnosis}}</span></div>
+
+<h2>Vital Signs:</h2>
+<div class="row">
+  <div class="field"><span class="label">Blood Pressure (mmHg):</span><span class="value">{{vital_bp}}</span></div>
+  <div class="field"><span class="label">Respiratory Rate (/min):</span><span class="value">{{vital_rr}}</span></div>
+</div>
+<div class="row">
+  <div class="field"><span class="label">Temperature (°C):</span><span class="value">{{vital_temp}}</span></div>
+  <div class="field"><span class="label">Pulse Oxygen Rate (%):</span><span class="value">{{vital_o2}}</span></div>
+</div>
+<div class="row">
+  <div class="field"><span class="label">Pulse Rate (bpm):</span><span class="value">{{vital_hr}}</span></div>
+  <div class="field"></div>
+</div>
+
+<div class="gap"></div>
+<div class="block"><span class="label">ASSESSMENT:</span><div class="value">{{assessment}}</div></div>
+<div class="block"><span class="label">NURSING INTERVENTIONS:</span><div class="value">{{interventions}}</div></div>
+
+<div class="sign right">{{#signature_block}}{{{signature_block}}}{{/signature_block}}{{^signature_block}}<div class="signed"><img class="esign" src="{{template_dir}}signature-prieto.jpeg" alt="" /><strong>Angelo Tristan B. Prieto, M.D.</strong><small>Lic. No. 0124173</small></div>{{/signature_block}}</div>

@@ -1,0 +1,89 @@
+/*
+ * Tablet / desktop outer shell styles for the Nurse portal (viewport >= 768px).
+ *
+ * The shared chrome (shell root, sidebar, header, main) lives in
+ * NurseLayout-for-Desktop-View.css; this file owns the collapsible sidebar,
+ * its in-sidebar toggle, the fixed frame and the scroll container.
+ */
+
+.nurse-sidebar { transition:width .28s ease; }
+.nurse-shell-body { transition:margin-left .28s ease; }
+.nurse-header { transition:left .28s ease; }
+
+/*
+ * Icons stay on one vertical axis (38px from the sidebar edge, the folded
+ * rail's center line) in both states; only the text folds away.
+ */
+.nurse-sidebar-nav { padding:12px 12px 10px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none; }
+.nurse-sidebar-nav::-webkit-scrollbar { display:none; }
+.nurse-nav-link { padding-left:16px; }
+.nurse-sidebar-brand { padding:20px 18px 20px 21px; }
+.nurse-nav-label { white-space:nowrap;overflow:hidden;max-width:200px;opacity:1;transition:max-width .28s ease,opacity .18s ease; }
+.nurse-sidebar-brand a>div { white-space:nowrap;overflow:hidden;max-width:200px;opacity:1;transition:max-width .28s ease,opacity .18s ease; }
+.nurse-sidebar-campus { transition:opacity .28s ease; }
+
+/* Collapse toggle: a soft square at the right end of the brand row. */
+.nurse-sidebar-brand { display:flex;align-items:center;gap:8px; }
+.nurse-sidebar-brand>a { flex:1;min-width:0; }
+.nurse-sidebar-collapse {
+  display:flex;flex-shrink:0;align-items:center;justify-content:center;
+  width:32px;height:32px;border:0;border-radius:10px;
+  background:#ffffff1a;color:#ffffffcc;cursor:pointer;
+  transition:background-color .15s ease,color .15s ease,opacity .15s ease;
+}
+.nurse-sidebar-collapse:hover { background:#ffffff33;color:#fff; }
+.nurse-sidebar-collapse:focus-visible { outline:2px solid #fde68a;outline-offset:2px; }
+.nurse-sidebar-collapse svg { width:17px;height:17px; }
+.nurse-brand-symbol { transition:opacity .15s ease; }
+
+.nurse-sidebar.is-collapsed { width:76px; }
+.nurse-sidebar.is-collapsed ~ .nurse-shell-body { margin-left:76px; }
+.nurse-sidebar.is-collapsed ~ .nurse-shell-body .nurse-header { left:76px; }
+.nurse-sidebar.is-collapsed .nurse-sidebar-brand a>div { max-width:0;opacity:0; }
+/* Folded rail: no room beside the logo, so the toggle sits over it (same 38px axis)
+   and replaces it on hover or keyboard focus; a tap on touch screens hits it too. */
+.nurse-sidebar.is-collapsed .nurse-sidebar-collapse { position:absolute;left:21px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius: 10px;background:#ffffff33;opacity:0; }
+.nurse-sidebar.is-collapsed .nurse-sidebar-brand:hover .nurse-sidebar-collapse,
+.nurse-sidebar.is-collapsed .nurse-sidebar-collapse:focus-visible { opacity:1; }
+.nurse-sidebar.is-collapsed .nurse-sidebar-brand:hover .nurse-brand-symbol,
+.nurse-sidebar.is-collapsed .nurse-sidebar-brand:has(.nurse-sidebar-collapse:focus-visible) .nurse-brand-symbol { opacity:0; }
+.nurse-sidebar.is-collapsed .nurse-sidebar-campus { opacity:0; }
+.nurse-sidebar.is-collapsed .nurse-nav-label { max-width:0;opacity:0; }
+/* The folded rail keeps the gap between groups but hides their labels. */
+.nurse-sidebar.is-collapsed .nurse-nav-section { color:transparent; }
+/* Unread count becomes a dot on the bell icon in the folded rail. */
+.nurse-sidebar.is-collapsed .nurse-nav-count { top:4px;right:auto;left:34px; }
+
+@media (min-width:768px) and (max-width:1099px) {
+  .nurse-header-inner { padding:0 18px;gap:10px; }
+}
+
+/*
+ * The frame is pinned to the viewport and the shell body is the scroll
+ * container, sitting below the fixed header so its scrollbar never runs
+ * behind it. Only where this shell exists (>= 768px).
+ */
+@media (min-width:768px) {
+  html:has(.nurse-shell),
+  body:has(.nurse-shell) { overflow:hidden; }
+  .nurse-shell { display:flow-root;position:fixed;inset:0;min-height:0;overflow:clip; }
+  .nurse-shell-body {
+    min-height:0;
+    height:calc(100dvh - var(--np-header-height));
+    margin-top:var(--np-header-height);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:#c9bfc2 transparent;
+  }
+  .nurse-main { min-height:100%;padding-top:20px; }
+  /* Clear the pull tab that sits over the header's left edge. */
+  .nurse-header-inner { padding-left:40px; }
+  .nurse-shell-body::-webkit-scrollbar { width:10px; }
+  .nurse-shell-body::-webkit-scrollbar-track { background:transparent; }
+  .nurse-shell-body::-webkit-scrollbar-thumb { background-color:#c9bfc2;border-radius: 10px;border:3px solid transparent;background-clip:content-box; }
+  .nurse-shell-body::-webkit-scrollbar-thumb:hover { background-color:#ab9ea2; }
+  .dark .nurse-shell-body { scrollbar-color:#374151 transparent; }
+  .dark .nurse-shell-body::-webkit-scrollbar-thumb { background-color:#374151; }
+  .dark .nurse-shell-body::-webkit-scrollbar-thumb:hover { background-color:#4b5563; }
+}

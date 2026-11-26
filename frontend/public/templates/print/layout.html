@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  Shared page for every printable clinic document: the header and the page box. The styles are in print.css.
+  The document itself (consultation-form.html, medical-certificate.html, ...) fills the content placeholder inside .page below.
+  See README.md in this folder for the placeholders you can use.
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{file_title}}</title>
+    <!-- External file, not a <style> block: the site's Content-Security-Policy blocks inline styles.
+         Root-relative: the print window and the preview frame take the app page's address as their base. -->
+    <link rel="stylesheet" href="/templates/print/print.css" />
+    {{#paper_a4}}<link rel="stylesheet" href="/templates/print/paper-a4.css" />{{/paper_a4}}
+  </head>
+  <body>
+    <div class="page">
+      <div class="head">
+        <img class="logo" src="{{template_dir}}pup-logo.png" alt="PUP Biñan Campus logo" />
+        <div class="names">
+          <p class="republic">Republic of the Philippines</p>
+          <p class="university">Polytechnic University of the Philippines</p>
+          <p class="campus">Biñan Campus</p>
+          <p class="clinic">{{clinic_name}}</p>
+          {{#clinic_address}}<p class="clinic">{{clinic_address}}</p>{{/clinic_address}}
+          {{#clinic_email}}<p class="clinic email">{{clinic_email}}</p>{{/clinic_email}}
+        </div>
+        {{#right_logo}}<img class="logo" src="{{right_logo}}" alt="" />{{/right_logo}}
+        {{^right_logo}}<div class="spacer"></div>{{/right_logo}}
+      </div>
+      {{{content}}}
+    </div>
+  </body>
+</html>

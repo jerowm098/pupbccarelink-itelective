@@ -1,0 +1,71 @@
+/*
+ * Mobile outer shell styles (viewport 300px – 767px; 300px is the narrowest
+ * width the layout is tuned for).
+ *
+ * Split out of StudentLayout-for-Desktop-View.css. These rules deliberately come
+ * AFTER StudentLayout-for-Desktop-View.css in the bundle (StudentLayout-for-Desktop-View
+ * imports StudentLayout-for-Desktop-View.css, then imports
+ * StudentLayout-for-Mobile-View-Min-300px, which imports this file), so the cascade order
+ * matches the original single stylesheet.
+ */
+
+@media (max-width:767px) {
+  .student-approved-shell { --sp-sidebar:0px;--sp-nav-height:70px;--sp-header-height:58px; }
+  .student-header-inner { padding:0 12px;gap:7px; }
+  .student-header-brand { display:flex;flex:1;min-width:0;align-items:center;gap:8px; }
+  .student-header-brand-symbol { width:28px;height:28px;flex-shrink:0;color:var(--sp-accent); }
+  .student-header-brand-name { display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:16px;font-weight:700;letter-spacing:-.4px;line-height:1.15;color:var(--sp-accent); }
+  .student-header-brand-caption { display:block;margin-top:1px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--sp-muted); }
+  .student-header-page { font-size:13px; }
+  .student-header-actions { gap:6px; }
+  .student-header-icon { width:44px;height:44px; }
+  .student-clinic-status { display:none; }
+  .student-main { padding:calc(var(--sp-header-height) + 12px) 12px 16px;scroll-padding-top:calc(var(--sp-header-height) + 12px); }
+  .student-bottom-nav { display:block;position:fixed;bottom:0;left:0;right:0;z-index:40;min-height:70px;background:var(--sp-surface);border-top:1px solid var(--sp-border);padding-bottom:env(safe-area-inset-bottom); }
+  .student-bottom-nav>div { max-width:500px;margin:auto;padding:6px 4px; }
+  .student-bottom-nav a { min-height:56px; }
+  .student-approved-shell .carelink-assistant-dock { right:14px;width:48px;height:48px;bottom:calc(70px + env(safe-area-inset-bottom) + 11px); }
+  .student-approved-shell .carelink-assistant-panel { right:12px;width:calc(100vw - 24px); }
+
+  /*
+   * Hide the page scrollbar on the Student shell while still allowing scroll
+   * (native-app feel). Scoped with :has() so other routes keep their
+   * scrollbars, and only for the mobile breakpoint.
+   */
+  html:has(.student-approved-shell),
+  body:has(.student-approved-shell),
+  .student-approved-shell { scrollbar-width:none;-ms-overflow-style:none; }
+  html:has(.student-approved-shell)::-webkit-scrollbar,
+  body:has(.student-approved-shell)::-webkit-scrollbar,
+  .student-approved-shell::-webkit-scrollbar { display:none; }
+}
+
+/* Small phones (320–374px): keep the brand caption on one line and the bottom-nav labels whole. */
+@media (max-width:374px) {
+  .student-header-brand-caption { font-size:10px;letter-spacing:.8px;white-space:nowrap; }
+  .student-bottom-nav-label { font-size:10.5px;letter-spacing:-.1px; }
+}
+
+/*
+ * Narrowest phones (300–339px). At 300px the header has ~276px of room once
+ * padded: three 44px icons would leave the brand only ~110px, so the icons
+ * shrink to 40px (still a comfortable tap target), the gaps and padding
+ * tighten, and the bottom-nav tabs (~73px each) get smaller labels so
+ * "Appointments" fits without being cut off.
+ */
+@media (max-width:339px) {
+  .student-approved-shell { --sp-header-height:54px; }
+  .student-header-inner { padding:0 8px;gap:4px; }
+  .student-header-brand { gap:6px; }
+  .student-header-brand-symbol { width:24px;height:24px; }
+  .student-header-brand-name { font-size:15px; }
+  .student-header-brand-caption { font-size:9px;letter-spacing:.5px; }
+  .student-header-actions { gap:2px; }
+  .student-header-icon { width:40px;height:40px; }
+  .student-main { padding:calc(var(--sp-header-height) + 10px) 8px 14px;scroll-padding-top:calc(var(--sp-header-height) + 10px); }
+  .student-bottom-nav>div { padding:6px 2px; }
+  .student-bottom-nav a { padding:0 2px; }
+  .student-bottom-nav-label { font-size:10px;letter-spacing:-.2px; }
+  .student-approved-shell .carelink-assistant-dock { right:10px;width:44px;height:44px; }
+  .student-approved-shell .carelink-assistant-panel { right:8px;width:calc(100vw - 16px); }
+}

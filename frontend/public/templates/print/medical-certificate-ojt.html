@@ -1,0 +1,28 @@
+<!-- Medical Certificate (OJT). Printed inside layout.html. Placeholders are listed in README.md.
+     Follows the clinic's MEDCERT-OJT.xlsx: the student is essentially normal and may undergo On the Job Training
+     at a company. A field with no value keeps its blank line so it can be written by hand. -->
+<h1>Medical Certificate</h1>
+
+<div class="row">
+  <div class="field"><span class="label">Control No.:</span><span class="value">{{certificate_ref}}</span></div>
+  <div class="field short"><span class="label">Date:</span><span class="value">{{issued_date}}</span></div>
+</div>
+<div class="gap"></div>
+
+<div class="ojt">
+  <p class="statement">
+    This is to certify that <span class="fill wide">{{student_name}}</span> {{#student_sex}}({{student_sex}}){{/student_sex}}{{^student_sex}}(M/F){{/student_sex}},
+    <span class="fill short">{{student_age}}</span> years old, resident at <span class="fill wide">{{student_address}}</span>
+    is <strong>ESSENTIALLY NORMAL</strong> at the time of examination.
+  </p>
+  <div class="gap"></div>
+  <p class="statement">
+    He/She may undergo &ldquo;On the Job Training (OJT)&rdquo; at <span class="fill wide">{{ojt_company}}</span>.
+  </p>
+</div>
+
+<div class="sign right">{{#signature_block}}{{{signature_block}}}{{/signature_block}}{{^signature_block}}<div class="signed"><img class="esign" src="{{template_dir}}signature-prieto.jpeg" alt="" /><strong>Angelo Tristan Prieto, M.D.</strong><small>Lic. No. 0124173</small></div>{{/signature_block}}</div>
+<p class="note">
+  System-generated copy of a certificate issued by the {{clinic_name}} on {{visit_date}}.
+  Verify the control number with the clinic.
+</p>

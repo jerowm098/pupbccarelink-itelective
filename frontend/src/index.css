@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Big screens that are also tall enough (used by the login pages to avoid scrolling) */
+@custom-variant tall (@media (min-width: 96rem) and (min-height: 62.5rem));
+@custom-variant roomy (@media (min-height: 50rem));
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/*
+ * Brand maroon: one ramp anchored on PUP maroon (maroon-800 = #800000), same
+ * hue family throughout. Use these tokens (bg-maroon-800, text-maroon-700, …)
+ * instead of raw hex so every portal, the landing page and the kiosk agree.
+ * 500 and darker pass 4.5:1 as text on white.
+ */
+@theme static {
+  --color-maroon-50: #fff4f3;
+  --color-maroon-100: #fde7e6;
+  --color-maroon-200: #facecd;
+  --color-maroon-300: #f0a8a7;
+  --color-maroon-400: #de7a7b;
+  --color-maroon-500: #c34e54;
+  --color-maroon-600: #a82c38;
+  --color-maroon-700: #921127;
+  --color-maroon-800: #800000;
+  --color-maroon-900: #5f0415;
+  --color-maroon-950: #3d050c;
+}
+
+.recovery-auth-background {
+  background-color: var(--color-maroon-950);
+  background-image:
+    linear-gradient(to bottom right,
+      color-mix(in srgb, var(--color-maroon-900) 58%, transparent),
+      color-mix(in srgb, var(--color-maroon-800) 45%, transparent),
+      color-mix(in srgb, var(--color-maroon-950) 62%, transparent)),
+    url('./assets/pupbg.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+
+.animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
+.animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+.animate-shake { animation: shake 0.3s ease-in-out; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-600 { animation-delay: 0.6s; }
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-4000 { animation-delay: 4s; }
+
+/* Chatbot "thinking" indicator: three dots cycling "..." -> "." -> ".." -> "..."
+   instead of a spinner. First dot stays lit, dots 2 and 3 blink on their own
+   schedules so the bubble reads as typing in a narrow chat window. */
+.think-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: var(--color-maroon-600);
+  opacity: 1;
+  animation-duration: 1.6s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.think-dot-2 { animation-name: thinkDots2; }
+.think-dot-3 { animation-name: thinkDots3; }
+
+@keyframes thinkDots2 {
+  0%, 24% { opacity: 1; }
+  25%, 49% { opacity: 0.12; }
+  50%, 100% { opacity: 1; }
+}
+
+@keyframes thinkDots3 {
+  0%, 24% { opacity: 1; }
+  25%, 74% { opacity: 0.12; }
+  75%, 100% { opacity: 1; }
+}
+
+html { color-scheme: light; }
+html.dark {
+  color-scheme: dark;
+  --dashboard-bg: #111827;
+  --dashboard-surface: #1f2937;
+  --dashboard-header: #111827;
+  --dashboard-soft: #1f2937;
+  --dashboard-border: #1f2937;
+  --dashboard-outline: #374151;
+  --dashboard-text: #f3f4f6;
+  --dashboard-muted: #9ca3af;
+  --dashboard-accent: #f3f4f6;
+  --dashboard-selected-bg: #ffffff1a;
+  --dashboard-selected-text: #ffffff;
+}
+.dark body { background-color: var(--dashboard-bg); color: var(--dashboard-text); }
+
+/* ============================================================
+   Global Dashboard Dark Mode (shared by Nurse & Student portals)
+   ============================================================ */
+.dark :is(.nurse-shell, .student-approved-shell) {
+  background-color: var(--dashboard-bg);
+  color: var(--dashboard-text);
+}
+
+.dark :is(.nurse-sidebar, .student-sidebar) {
+  background: linear-gradient(to bottom, var(--dashboard-surface), var(--dashboard-bg));
+  box-shadow: 0 25px 50px -12px #0000004d;
+}
+
+.dark :is(.nurse-sidebar-brand, .student-sidebar-brand) {
+  border-bottom-color: #ffffff0d;
+}
+
+.dark :is(.nurse-brand-symbol, .student-brand-symbol) {
+  background: #ffffff1a;
+}
+
+.dark :is(.nurse-sidebar-campus, .student-sidebar-campus) {
+  opacity: .08;
+}
+
+.dark :is(.nurse-nav-link, .student-sidebar-nav > a) {
+  color: #d1d5db;
+}
+
+.dark :is(.nurse-nav-link:hover, .student-sidebar-nav > a:hover) {
+  background: #ffffff0d;
+  color: #fff;
+}
+
+/* Consistent neutral selected state across both portals in dark mode */
+.dark :is(.nurse-nav-link[aria-current="page"], .student-sidebar-nav > a[aria-current="page"]) {
+  background: var(--dashboard-selected-bg);
+  color: var(--dashboard-selected-text);
+  box-shadow: none;
+}
+
+.dark :is(.nurse-header, .student-header) {
+  background: color-mix(in srgb, var(--dashboard-header) 80%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom-color: var(--dashboard-border);
+  box-shadow: none;
+}
+
+.dark :is(.nurse-shell, .student-approved-shell) :is(button, a, input, select, textarea):focus-visible {
+  outline-color: #9ca3af;
+}
+
+/* Remove maroon/rose accents inside dashboards in dark mode so selected tabs,
+   buttons, and active states stay neutral slate/gray like the Nurse dark theme. */
+.dark :is(.nurse-shell, .student-approved-shell) :is([class*="dark:bg-maroon-"], [class*="dark:bg-rose-"]) {
+  background-color: #374151;
+}
+.dark :is(.nurse-shell, .student-approved-shell) :is([class*="dark:border-maroon-"], [class*="dark:border-rose-"]) {
+  border-color: #4b5563;
+}
+.dark :is(.nurse-shell, .student-approved-shell) :is([class*="dark:text-maroon-"], [class*="dark:text-rose-"]) {
+  color: #f3f4f6;
+}
+.dark :is(.nurse-shell, .student-approved-shell) :is([class*="dark:hover:bg-maroon-"], [class*="dark:hover:bg-rose-"]):hover {
+  background-color: #374151;
+}
+.dark :is(.nurse-shell, .student-approved-shell) :is(.bg-maroon-800, .bg-maroon-900):not([class*="dark:bg-"]) {
+  background-color: #374151;
+  color: #ffffff;
+}
+.dark :is(.nurse-shell, .student-approved-shell) :is(.border-maroon-800, .border-maroon-900):not([class*="dark:border-"]) {
+  border-color: #4b5563;
+}
+
+/* Fallbacks for older screens. Explicit dark utilities always take precedence. */
+.dark .bg-white:not([class*="dark:bg-"]) { background-color: #1f2937; }
+.dark :is(.bg-gray-50, .bg-slate-50):not([class*="dark:bg-"]) { background-color: #111827; }
+.dark :is(.bg-gray-100, .bg-slate-100):not([class*="dark:bg-"]) { background-color: #263244; }
+.dark :is(.bg-gray-200, .bg-slate-200):not([class*="dark:bg-"]) { background-color: #374151; }
+.dark :is(.bg-gray-300, .bg-slate-300):not([class*="dark:bg-"]) { background-color: #4b5563; }
+.dark :is(.border-gray-100, .border-gray-200, .border-slate-100, .border-slate-200):not([class*="dark:border-"]) { border-color: #374151; }
+.dark :is(.border-gray-300, .border-slate-300):not([class*="dark:border-"]) { border-color: #4b5563; }
+.dark :is(.text-gray-950, .text-gray-900, .text-gray-800, .text-slate-950, .text-slate-900, .text-slate-800):not([class*="dark:text-"]) { color: #e5e7eb; }
+.dark :is(.text-gray-700, .text-gray-600, .text-slate-700, .text-slate-600):not([class*="dark:text-"]) { color: #cbd5e1; }
+.dark :is(.text-gray-500, .text-gray-400, .text-slate-500, .text-slate-400):not([class*="dark:text-"]) { color: #9ca3af; }
+.dark :is(.text-maroon-600, .text-maroon-700, .text-maroon-800, .text-maroon-900):not([class*="dark:text-"]) { color: #e5e7eb; }
+.dark :is(.bg-maroon-50, .bg-maroon-100, .bg-rose-50, .bg-rose-100):not([class*="dark:bg-"]) { background-color: #1f2937; }
+.dark :is(.text-rose-700, .text-rose-800):not([class*="dark:text-"]) { color: #d1d5db; }
+.dark :is(.bg-red-50, .bg-red-100):not([class*="dark:bg-"]) { background-color: #40232b; }
+.dark :is(.text-red-600, .text-red-700, .text-red-800):not([class*="dark:text-"]) { color: #fca5a5; }
+.dark :is(.bg-green-50, .bg-green-100):not([class*="dark:bg-"]) { background-color: #173a30; }
+.dark :is(.text-green-600, .text-green-700, .text-green-800):not([class*="dark:text-"]) { color: #86efac; }
+.dark :is(.bg-blue-50, .bg-blue-100):not([class*="dark:bg-"]) { background-color: #1f3354; }
+.dark :is(.text-blue-600, .text-blue-700, .text-blue-800):not([class*="dark:text-"]) { color: #93c5fd; }
+.dark :is(.bg-yellow-50, .bg-yellow-100, .bg-orange-50, .bg-orange-100):not([class*="dark:bg-"]) { background-color: #403323; }
+.dark :is(.text-yellow-600, .text-yellow-700, .text-orange-600, .text-orange-700):not([class*="dark:text-"]) { color: #fcd34d; }
+.dark :is(.bg-purple-50, .bg-purple-100):not([class*="dark:bg-"]) { background-color: #352847; }
+.dark :is(.text-purple-600, .text-purple-700):not([class*="dark:text-"]) { color: #d8b4fe; }
+.dark :is(input, textarea)::placeholder { color: #9ca3af; opacity: 1; }
+.dark :is(input, select, textarea):focus-visible { outline-color: #9ca3af; }
+.dark .hover\:bg-gray-50:hover:not([class*="dark:hover:bg-"]),
+.dark .hover\:bg-gray-100:hover:not([class*="dark:hover:bg-"]),
+.dark .hover\:bg-slate-100:hover:not([class*="dark:hover:bg-"]) { background-color: #374151; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeInUp, .animate-fadeIn, .animate-shake { animation: none; }
+}
+
+/* ============================================================
+   Chatbot typewriter + chip animations
+   ============================================================ */
+
+/* Each word fades in as it is "typed" */
+.word-appear {
+  display: inline-block;
+  animation: word-in 0.1s ease-out both;
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Follow-up chips stagger in one by one */
+.chip-stagger {
+  animation: chip-in 0.4s ease-out both;
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* While the AI is typing, the transcript locks to the bottom so the
+   newest words stay in view (the "camera" follows the reply). */
+.chat-locked {
+  scroll-behavior: smooth;
+}
+
+/* Landing page on mobile: the document scrolls, but hide its scrollbar
+   (same as the Student shell on phones). */
+@media (max-width: 767px) {
+  html:has(.landing-page),
+  body:has(.landing-page) {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html:has(.landing-page)::-webkit-scrollbar,
+  body:has(.landing-page)::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Landing page: on tablet/desktop the content scrolls inside .landing-scroll
+   (below the header), styled like the dashboard's .student-shell-body. */
+@media (min-width: 768px) {
+  .landing-scroll {
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #c9bfc2 transparent;
+  }
+
+  .landing-scroll::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .landing-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .landing-scroll::-webkit-scrollbar-thumb {
+    background-color: #c9bfc2;
+    border-radius: 8px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  .landing-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #ab9ea2;
+  }
+
+  .dark .landing-scroll {
+    scrollbar-color: #4a4149 transparent;
+  }
+
+  .dark .landing-scroll::-webkit-scrollbar-thumb {
+    background-color: #4a4149;
+  }
+
+  .dark .landing-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #5c525b;
+  }
+}
+
+
+/* Hide the chatbot scrollbar but keep scrolling */
+.chatbot-transcript {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.chatbot-transcript::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-appear,
+  .chip-stagger {
+    animation: none;
+  }
+}

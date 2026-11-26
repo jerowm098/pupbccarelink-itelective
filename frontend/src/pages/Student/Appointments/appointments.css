@@ -1,0 +1,428 @@
+.student-appointments { width:100%;min-width:0; }
+.approved-appointments-page { display:grid;gap:12px; }
+.ap-card { min-width:0;border:1px solid var(--sp-border,#eadfe1);border-radius: 10px;background:var(--sp-surface,#fff);box-shadow:0 2px 7px #5a0b2004;overflow:hidden; }
+.ap-hero { position:relative;overflow:hidden;border:1px solid var(--sp-border);border-radius: 10px;background:var(--sp-surface); }
+/* The loading bar sits above the hero artwork; isolation keeps that z-index
+   local to the hero. */
+.ap-hero { isolation:isolate; }
+.ap-hero-copy { position:relative;z-index:1;padding:24px; }
+.ap-hero h1 { color:#111827;font-size:36px;font-weight:750;line-height:1.06;letter-spacing:-1.2px; }
+.dark .ap-hero h1 { color:#fff; }
+.ap-hero-description { margin-top:8px;max-width:65ch;font-size:14px;line-height:1.5;color:var(--sp-text); }
+.ap-section-heading { display:flex;align-items:center;gap:8px;padding:12px 16px 10px;min-width:0; }
+.ap-section-heading>svg { flex-shrink:0;width:17px;height:17px;color:var(--sp-accent); }
+.ap-section-heading h2 { font-size:15px;font-weight:700;color:#111827;line-height:1.3; }
+.dark .ap-section-heading h2 { color:#fff; }
+.ap-section-heading p { margin-top:2px;font-size:12px;color:var(--sp-muted); }
+.ap-section-heading>button,.ap-section-heading>label { margin-left:auto; }
+.ap-section-heading select { border:1px solid var(--sp-border);border-radius:7px;background:var(--sp-surface);color:var(--sp-muted);font-size:12px;padding:6px 9px;max-width:200px; }
+/*
+ * Booking toast — fixed top-right, just under the portal header, so it never
+ * shares a corner with the chatbot (bottom-right) and the two stay fully
+ * independent. It lives in <body> (portal), outside the shell's --sp-* tokens,
+ * so colors are explicit with a .dark variant.
+ */
+.ap-toast { position:fixed;right:18px;top:calc(62px + env(safe-area-inset-top) + 12px);z-index:60;display:flex;align-items:flex-start;gap:10px;width:min(360px,calc(100vw - 36px));padding:12px 12px 12px 14px;border:1px solid;border-radius:10px;background:#fff;box-shadow:0 10px 28px #2a0a1426;animation:ap-toast-in .22s ease-out; }
+.ap-toast p { flex:1;min-width:0;font-size:13px;line-height:1.45;color:#382a2e;overflow-wrap:anywhere; }
+.ap-toast-icon { flex-shrink:0;width:18px;height:18px;margin-top:1px; }
+.ap-toast.is-success { border-color:#bfe3cf; }
+.ap-toast.is-success .ap-toast-icon { color:#2b7650; }
+.ap-toast.is-error { border-color:#f1c6cf; }
+.ap-toast.is-error .ap-toast-icon { color:#a13e51; }
+.ap-toast-close { flex-shrink:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;margin:-2px -2px 0 0;border-radius:6px;color:#6f6166;cursor:pointer; }
+.ap-toast-close:hover { background:#faeeec;color:var(--color-maroon-800); }
+.ap-toast-close svg { width:15px;height:15px; }
+.dark .ap-toast { background:#242029;box-shadow:0 10px 28px #00000066; }
+.dark .ap-toast p { color:#f6edf0; }
+.dark .ap-toast.is-success { border-color:#2f4a3e;border-left-color:#7ccf9f; }
+.dark .ap-toast.is-success .ap-toast-icon { color:#7ccf9f; }
+.dark .ap-toast.is-error { border-color:#5a3340;border-left-color:#e7acbc; }
+.dark .ap-toast.is-error .ap-toast-icon { color:#e7acbc; }
+.dark .ap-toast-close { color:#c1acb5; }
+.dark .ap-toast-close:hover { background:#36232c;color:#efb0bd; }
+@keyframes ap-toast-in { from { opacity:0;transform:translateY(-10px); } to { opacity:1;transform:none; } }
+@media (prefers-reduced-motion:reduce) { .ap-toast { animation:none; } }
+.ap-upcoming-heading { padding-top:8px;padding-bottom:5px; }
+.ap-upcoming-content { padding:0 16px 12px; }
+/* Nested summary card (date · details · place · state · actions). With a
+   booking it opens the appointment details (replaces the old ··· button). */
+.ap-upcoming-summary { display:grid;grid-template-columns:60px minmax(130px,1.2fr) minmax(120px,1fr) minmax(140px,1fr) 158px;align-items:center;gap:16px;padding:8px 10px;border:1px solid var(--sp-border);border-radius:10px; }
+.ap-upcoming-summary.is-clickable { cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease,background-color .15s ease; }
+.ap-upcoming-summary.is-clickable:hover { border-color:var(--sp-accent);background:var(--sp-soft);box-shadow:0 4px 14px #2a0a1412; }
+.ap-upcoming-summary.is-clickable:focus-visible { outline:2px solid var(--sp-accent);outline-offset:2px; }
+.ap-date-tile { text-align:center;border:1px solid var(--sp-border);border-radius:9px;background:var(--sp-soft);color:var(--sp-accent);padding:6px 7px; }
+.ap-date-tile span { display:block;font-size:12px;font-weight:700; }
+.ap-date-tile strong { display:block;font-size:27px;line-height:1.1; }
+.ap-date-tile small { font-size:12px; }
+.ap-upcoming-details { display:grid;grid-template-columns:17px minmax(0,1fr);gap:6px 7px; }
+.ap-upcoming-details>svg,.ap-upcoming-place svg { width:16px;height:16px;color:var(--sp-accent); }
+.ap-upcoming-details strong,.ap-upcoming-place strong { display:block;font-size:12px;color:var(--sp-text);font-weight:700; }
+.ap-upcoming-details span { font-size:12px; }
+.ap-upcoming-details small,.ap-upcoming-place small { display:block;font-size:12px;color:var(--sp-muted);margin-top:1px; }
+.ap-upcoming-place { display:grid;gap:8px; }
+.ap-upcoming-place>div { display:flex;align-items:flex-start;gap:6px; }
+.ap-upcoming-state { padding-left:14px;border-left:1px solid var(--sp-border); }
+/* The status badge lives in the card heading (same spot as the empty card's
+   "Not booked"), so this cell holds only the check-in window + queue. */
+.ap-upcoming-state p { font-size:12px;color:var(--sp-muted);line-height:1.5;margin:0; }
+.ap-queue-label { display:block;font-size:12px;margin-top:4px;color:#111827;text-transform:capitalize; }
+.dark .ap-queue-label { color:#fff; }
+.ap-status { display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:1.5;padding:3px 9px;border-radius:7px;background:var(--sp-soft);color:var(--sp-accent);white-space:nowrap;font-weight:600; }
+.ap-status>span { width:4px;height:4px;border-radius:50%;background:currentColor; }
+.ap-status-approved,.ap-status-completed { background:#e4f3e9;color:#2b7650; }
+.ap-status-pending { background:#fff0d3;color:#896013; }
+.ap-status-cancelled,.ap-status-rejected,.ap-status-no_show { background:#f9e0e5;color:#a13e51; }
+.ap-status-expired { background:#eee8e8;color:#6d5f63; }
+.dark .ap-status-approved,.dark .ap-status-completed { background:#244035;color:#a7d8b7; }
+.dark .ap-status-pending { background:#473b25;color:#f0d095; }
+.dark .ap-status-cancelled,.dark .ap-status-rejected,.dark .ap-status-no_show { background:#482c36;color:#e7acbc; }
+.dark .ap-status-expired { background:#3d3540;color:#d2c0c8; }
+.ap-status-none { background:var(--color-gray-50);border:1px solid var(--color-gray-200);color:var(--color-gray-700); }
+.dark .ap-status-none { background:color-mix(in oklab,var(--color-gray-900) 30%,transparent);border-color:var(--color-gray-600);color:var(--color-gray-300); }
+.ap-button { display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:8px 12px;background:var(--color-maroon-800);color:white;border:1px solid var(--color-maroon-800);border-radius:6px;font-size:12px;font-weight:600;cursor:pointer; }
+.ap-button svg { width:13px;height:13px;flex-shrink:0; }
+.ap-button:hover:not(:disabled) { background:var(--color-maroon-900); }
+.ap-button:disabled { cursor:not-allowed;opacity:.55; }
+.ap-button-outline { background:transparent;border-color:#c67c8a;color:var(--sp-accent); }
+.ap-button-outline:hover:not(:disabled) { color:white; }
+.ap-upcoming-actions { display:grid;gap:5px;cursor:default; }
+.ap-upcoming-actions .ap-button { min-height:31px; }
+/* Empty upcoming card: same grid, placeholder values in muted tones. */
+.ap-upcoming.is-empty .ap-date-tile { background:var(--color-gray-100);color:var(--color-gray-500);border-color:var(--color-gray-200);border-style:dashed; }
+.dark .ap-upcoming.is-empty .ap-date-tile { background:var(--color-gray-700);color:var(--color-gray-300);border-color:var(--color-gray-600); }
+/* Empty tile: pulsing gray blocks stand in for the day and weekday. */
+.ap-upcoming.is-empty .ap-date-tile .ap-date-placeholder { background:var(--color-gray-200); }
+.dark .ap-upcoming.is-empty .ap-date-tile .ap-date-placeholder { background:var(--color-gray-600); }
+.ap-date-tile .ap-date-placeholder { display:block;margin:0 auto;border-radius:5px;background:var(--sp-border);animation:ap-date-pulse 1.6s ease-in-out infinite; }
+.ap-date-tile .ap-date-placeholder.is-day { width:26px;height:22px;margin-top:4px;margin-bottom:5px; }
+.ap-date-tile .ap-date-placeholder.is-weekday { width:20px;height:8px; }
+@keyframes ap-date-pulse { 50% { opacity:.45; } }
+@media (prefers-reduced-motion:reduce) { .ap-date-tile .ap-date-placeholder { animation:none; } }
+/* No check-in data yet (no booking, or the clinic hasn't set a window): the
+   cell stays in the grid on desktop but drops its divider. */
+.ap-upcoming-state:empty { border-left:0; }
+.ap-upcoming.is-empty .ap-upcoming-details>svg,.ap-upcoming.is-empty .ap-upcoming-place svg { color:var(--sp-muted); }
+.ap-upcoming.is-empty .ap-upcoming-details span,.ap-upcoming.is-empty .ap-upcoming-place strong { color:var(--sp-muted); }
+/*
+ * Booking flow = vertical TIMELINE. A numbered spine (circle marker +
+ * connector line) runs down the left gutter; each step's content sits in
+ * one soft, borderless panel directly below its label. The whole column
+ * (spine + 420px panels = 462px) is centered in the card via margin auto;
+ * text inside the panels stays left-aligned. Marker states:
+ * upcoming = gray outline, current (.is-active) = solid maroon with a soft
+ * ring, completed (check icon) = maroon outline + maroon check.
+ */
+.ap-booking-steps { display:block;padding:6px 16px 16px; }
+.ap-booking-progress { display:grid;gap:22px;max-width:462px;list-style:none;margin:0 auto;padding:0; }
+.ap-booking-progress li { position:relative;min-width:0;padding-left:42px; }
+/* Connector: every step except the last draws a segment from its marker's
+   center down into the gap; the next marker covers the rest, so the visible
+   line always runs marker-edge to marker-edge. */
+.ap-booking-progress li:not(:last-child)::before { content:'';position:absolute;left:13px;top:14px;bottom:-22px;width:2px;background:var(--sp-border); }
+.ap-step-heading { display:flex;align-items:center;min-height:28px;margin-bottom:8px; }
+.ap-step-marker { position:absolute;left:0;top:0;z-index:1;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:2px solid var(--sp-border);border-radius:50%;background:var(--sp-surface);font-size:12px;font-weight:700;color:var(--sp-muted); }
+.ap-step-marker svg { width:14px;height:14px; }
+/* Bare check glyph floats slightly high in the round marker: nudge it to the
+   optical center and let it fill more of the circle. */
+.ap-step-marker .ap-step-check { width:16px;height:16px;transform:translateY(.5px); }
+.ap-booking-progress li.is-active .ap-step-marker { border-color:var(--color-maroon-800);background:var(--color-maroon-800);color:white;box-shadow:0 0 0 3px var(--sp-soft); }
+.ap-booking-progress li .ap-step-marker:has(svg) { border-color:var(--sp-accent);background:var(--sp-surface);color:var(--sp-accent); }
+.ap-step-label { color:var(--sp-text);font-size:14px;line-height:28px;font-weight:700; }
+/* Upcoming steps (not current, not yet checked) get a quieter label. */
+.ap-booking-progress li:not(.is-active):not(:has(.ap-step-marker svg)) .ap-step-label { color:var(--sp-muted);font-weight:600; }
+.ap-booking-column { min-width:0;max-width:420px; }
+/* Every step's contents live in their own equally-wide container. */
+.ap-step-body { background:var(--color-gray-50);border:1px solid var(--sp-border);border-radius:10px;padding:12px; }
+.ap-column-caption { font-size:12px;color:var(--sp-muted);min-height:16px;margin-bottom:7px; }
+.ap-calendar { background:var(--color-gray-50);border:1px solid var(--sp-border);border-radius:10px;padding:12px; }
+.dark .ap-step-body,.dark .ap-calendar { background:color-mix(in oklab,var(--color-gray-900) 30%,transparent); }
+.ap-calendar-month { display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:5px; }
+.ap-calendar-month strong { font-size:12px; }
+.ap-calendar-month>div { display:flex; }
+.ap-calendar-month button { width:24px;height:25px;display:flex;align-items:center;justify-content:center;border-radius:5px;color:var(--sp-muted); }
+.ap-calendar-month button:disabled { opacity:.3; }
+.ap-calendar-month svg { width:12px;height:12px; }
+.ap-calendar-grid { display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px; }
+.ap-calendar-weekday { font-size:12px;color:var(--sp-muted);text-align:center;line-height:23px; }
+/* Date states, all drawn from the theme tokens so text stays readable in light
+   and dark: hover = soft tint + accent text; selected = solid maroon + white
+   text, and hovering it only deepens the maroon (never swaps to the tint). */
+.ap-calendar-grid button { min-width:0;min-height:30px;border-radius:5px;font-size:12px;color:var(--sp-text);border:1px solid transparent;transition:background-color .12s ease,border-color .12s ease,color .12s ease; }
+.ap-calendar-grid button:hover:not(:disabled):not(.is-selected) { background:var(--color-gray-100);border-color:var(--sp-border);color:var(--color-gray-700); }
+.dark .ap-calendar-grid button:hover:not(:disabled):not(.is-selected) { background:color-mix(in oklab,var(--color-gray-900) 30%,transparent);color:var(--color-gray-300); }
+.ap-calendar-grid button.is-selected { background:var(--color-maroon-800);border-color:var(--color-maroon-800);color:#fff;font-weight:700; }
+.dark .ap-calendar-grid button.is-selected { background:var(--color-gray-700);border-color:var(--color-gray-600);color:#fff; }
+.ap-calendar-grid button.is-selected:hover:not(:disabled) { background:var(--color-maroon-900);border-color:var(--color-maroon-900); }
+.dark .ap-calendar-grid button.is-selected:hover:not(:disabled) { background:var(--color-gray-600);border-color:var(--color-gray-500); }
+.ap-calendar-grid button.is-today:not(.is-selected) { border-color:var(--color-gray-300);color:var(--sp-accent);font-weight:700; }
+.ap-calendar-grid button:focus-visible { outline:2px solid var(--sp-accent);outline-offset:1px; }
+.ap-calendar-grid button:disabled { opacity:.33;cursor:not-allowed; }
+.ap-calendar-note { margin-top:9px;font-size:12px;color:var(--sp-muted);text-align:center; }
+.ap-time-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:5px; }
+.ap-time-grid button { position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:46px;padding:6px 3px;border:1px dashed var(--sp-border);border-radius:5px;font-size:12px;line-height:1.15;color:var(--sp-text);background:var(--sp-surface);white-space:nowrap; }
+.ap-time-grid button:disabled { opacity:.5;cursor:not-allowed; }
+.ap-time-grid button.is-selected { background:var(--color-maroon-800);color:white;border-color:var(--color-maroon-800); }
+.dark .ap-time-grid button.is-selected { background:var(--color-gray-700);color:#fff;border-color:var(--color-gray-600); }
+.ap-time-grid button>span { font-size:11px;color:inherit;line-height:1.25;white-space:normal; }
+.ap-time-grid button>span.ap-slot-past-tag { color:var(--sp-muted);font-weight:600; }
+.ap-time-grid button>span.ap-slot-full-tag { color:#a13e51;font-weight:600; }
+.dark .ap-time-grid button>span.ap-slot-full-tag { color:#e7acbc; }
+.ap-time-grid button.is-past:not(.is-selected) { color:var(--sp-muted); }
+.ap-time-grid button:hover:not(:disabled):not(.is-selected) { background:var(--color-gray-50);border-color:var(--color-gray-300); }
+.dark .ap-time-grid button:hover:not(:disabled):not(.is-selected) { background:color-mix(in oklab,var(--color-gray-900) 30%,transparent); }
+.ap-column-footnote,.ap-availability-note { font-size:12px;color:var(--sp-muted);margin-top:8px; }
+.ap-availability-note button { text-decoration:underline;color:var(--sp-accent); }
+/* The loading state mirrors the time grid's geometry so the step body keeps the
+   same height before and after availability arrives. */
+.ap-slots-loading { position:relative;font-size:12px;color:var(--sp-muted); }
+.ap-slots-loading-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:5px;visibility:hidden; }
+.ap-slots-loading-grid>span { min-height:46px;border:1px dashed var(--sp-border);border-radius:5px; }
+.ap-slots-loading-label { position:absolute;inset:0;display:flex;gap:7px;align-items:center;justify-content:center; }
+.ap-slots-loading svg { width:17px;height:17px; }
+.ap-service-list { display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px 10px; }
+/* Each service is a bordered card; the selected one gets a maroon border. */
+.ap-service-list label { display:flex;align-items:center;gap:8px;padding:8px 10px;min-height:48px;border:1px solid var(--sp-border);border-radius: 10px;background:var(--sp-surface);min-width:0;cursor:pointer;transition:border-color .12s ease,background-color .12s ease; }
+.ap-service-list label:hover:not(.is-selected) { background:var(--color-gray-50);border-color:var(--color-gray-300); }
+.dark .ap-service-list label:hover:not(.is-selected) { background:color-mix(in oklab,var(--color-gray-900) 30%,transparent); }
+.ap-service-list label.is-selected { background:var(--color-gray-50);border-color:var(--color-maroon-800); }
+.dark .ap-service-list label.is-selected { background:var(--color-gray-700);border-color:var(--color-gray-500); }
+.ap-service-list input { width:11px;height:11px;flex-shrink:0;accent-color:var(--color-maroon-800); }
+.ap-service-list svg { width:13px;height:13px;flex-shrink:0;color:var(--sp-accent); }
+.ap-service-list strong { display:block;font-size:12px;line-height:1.2; }
+.ap-service-list small { display:block;font-size:12px;line-height:1.35;color:var(--sp-muted);margin-top:2px; }
+/* "Other:" with an underline field to name the service. */
+.ap-service-list .ap-other-service { display:flex;flex:1;align-items:baseline;gap:6px;min-width:0; }
+.ap-other-service strong { flex-shrink:0; }
+.ap-service-list .ap-other-service input { flex:1;width:auto;height:auto;min-width:0;padding:3px 6px;border:0;border-bottom:1px solid var(--sp-muted);border-radius:4px 4px 0 0;background:var(--sp-surface);font-size:12px;color:var(--sp-text); }
+.ap-service-list .ap-other-service input:focus { outline:none;border-bottom-color:var(--color-maroon-800); }
+.ap-service-list label.is-selected>span:last-child { flex:1;min-width:0; }
+.ap-service-list .ap-service-reason { display:flex;flex-direction:column;gap:4px;margin-top:8px; }
+.ap-service-reason>span { font-size:11px;font-weight:600;color:var(--sp-text); }
+.ap-service-reason em { font-style:normal;color:var(--color-maroon-800); }
+.ap-service-list .ap-service-reason input { width:100%;height:auto;padding:6px 8px;border:1px solid var(--sp-border);border-radius:6px;background:var(--sp-surface);font-size:12px;color:var(--sp-text); }
+.ap-service-list .ap-service-reason input:focus { outline:none;border-color:var(--color-maroon-800); }
+.ap-summary dl>div { display:flex;align-items:flex-start;gap:8px;padding:16px 0;border-bottom:1px solid var(--sp-border); }
+.ap-summary dl svg { width:15px;height:15px;flex-shrink:0;margin-top:3px;color:var(--sp-accent); }
+.ap-summary dt { font-size:12px;color:var(--sp-muted); }
+.ap-summary dd { margin-top:2px;font-size:12px;font-weight:600;line-height:1.4; }
+.ap-summary-note { display:flex;gap:6px;align-items:flex-start;font-size:12px;color:var(--sp-muted);line-height:1.5;margin:10px 0; }
+.ap-summary-note svg { width:12px;height:12px;flex-shrink:0; }
+.ap-review-booking { width:100%;margin-top:12px;padding:10px 12px; }
+.ap-review-booking svg { width:16px;height:16px;flex-shrink:0; }
+.ap-confirm-booking { width:100%;font-size:12px;padding:14px 5px; }
+.ap-text-button { color:var(--sp-accent);font-size:12px;text-decoration:underline; }
+/*
+ * History = card-row list (no table). Each row: date tile · service details
+ * · status + actions. Font sizes are deliberately readable (12-13px body),
+ * matching the rest of the page instead of the old 8-10px table text.
+ */
+.ap-history .ap-section-heading { padding-top:8px;padding-bottom:7px; }
+.ap-history-list { display:grid;gap:8px;padding:10px 12px 6px; }
+.ap-history-item,.ap-history-row { cursor:pointer; }
+.ap-history-item { display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--sp-border);border-radius:10px;background:var(--sp-surface);transition:background .15s ease,border-color .15s ease,box-shadow .15s ease; }
+/* Hover feedback: the card "lifts" — the same neutral gray as a hovered list
+   row (--sp-bg), a plain gray border and a soft shadow; no pink tint. */
+.ap-history-item:hover { background:var(--sp-bg);border-color:#d6d3d1;box-shadow:0 3px 10px #0000000f; }
+.dark .ap-history-item:hover { border-color:#4b5563;box-shadow:0 3px 10px #00000033; }
+.ap-history-item .ap-date-tile { flex-shrink:0;min-width:60px;background:var(--color-gray-100);border-color:var(--color-gray-200);color:#111827; }
+.dark .ap-history-item .ap-date-tile { background:var(--color-gray-700);border-color:var(--color-gray-600);color:#fff; }
+.ap-history-item .ap-date-tile span { font-size:12px; }
+.ap-history-item .ap-date-tile strong { font-size:22px; }
+.ap-history-item .ap-date-tile small { font-size:12px; }
+.ap-history-info { flex:1;min-width:0; }
+.ap-history-info strong { display:block;font-size:13px;font-weight:700;color:var(--sp-text);line-height:1.3; }
+.ap-history-info p { margin-top:3px;font-size:12px;color:var(--sp-muted);line-height:1.4; }
+.ap-history-concern { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic; }
+.ap-history-side { flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px; }
+.ap-history-actions { display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:4px 12px; }
+.ap-history-actions button,.ap-history-actions a { display:inline-flex;align-items:center;gap:5px;min-height:26px;font-size:12px;font-weight:600;color:#111827;white-space:nowrap;cursor:pointer; }
+.ap-history-actions button:hover,.ap-history-actions a:hover { text-decoration:underline; }
+.ap-history-actions svg { width:13px;height:13px;color:var(--sp-accent); }
+.dark .ap-history-actions button,.dark .ap-history-actions a { color:#fff; }
+/* History heading controls: filter select + layout (cards / list) menu. The
+   card stays overflow-visible so the layout dropdown is never clipped. */
+.ap-card.ap-history { overflow:visible; }
+.ap-history-controls { display:flex;align-items:center;gap:8px;margin-left:auto; }
+.ap-view-toggle { position:relative;display:inline-grid;grid-template-columns:1fr 1fr;padding:3px;border:1px solid var(--sp-border);border-radius:9px;background:var(--color-gray-100); }
+.dark .ap-view-toggle { background:var(--color-gray-700); }
+.ap-view-toggle-thumb { position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);border-radius:7px;background:var(--sp-surface);box-shadow:0 1px 3px #0000001f;transition:transform .2s ease; }
+.ap-view-toggle.is-cards .ap-view-toggle-thumb { transform:translateX(100%); }
+.ap-view-toggle button { position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:32px;height:25px;border-radius:7px;color:var(--color-gray-500);cursor:pointer;transition:color .2s ease; }
+.ap-view-toggle button.is-selected { color:var(--sp-accent); }
+.ap-view-toggle button:not(.is-selected):hover { color:var(--color-gray-700); }
+.ap-view-toggle button:focus-visible { outline:2px solid var(--sp-accent);outline-offset:1px; }
+.ap-view-toggle svg { width:15px;height:15px; }
+/* List layout: one compact row per appointment under a column header. */
+/* List view: a nested, bordered table wrapper like the Records page —
+   gray-100 column header, divided rows, outlined row actions. */
+.ap-history-table { margin:4px 16px 4px;border:1px solid var(--sp-border);border-radius: 10px;overflow:hidden; }
+.ap-history-table-head,.ap-history-row { display:grid;grid-template-columns:minmax(120px,1fr) minmax(150px,1.3fr) minmax(130px,1.1fr) 112px 150px;align-items:center;gap:12px;padding:0 16px; }
+.ap-history-table-head { padding-top:12px;padding-bottom:12px;background:var(--color-gray-100);font-size:12px;font-weight:500;color:var(--color-gray-500); }
+.dark .ap-history-table-head { background:var(--color-gray-700);color:var(--color-gray-400); }
+.ap-history-table-head>:last-child { text-align:left; }
+.ap-sort-button { display:inline-flex;align-items:center;gap:4px;font:inherit;color:inherit;cursor:pointer; }
+.ap-sort-button:hover,.ap-sort-button.is-active { color:var(--color-gray-900); }
+.dark .ap-sort-button:hover,.dark .ap-sort-button.is-active { color:#fff; }
+.ap-sort-button svg { width:9px;height:13px;color:var(--color-gray-400); }
+.ap-sort-button svg path { fill:none;stroke:currentColor;stroke-width:1.1;stroke-linejoin:round; }
+.ap-sort-button svg path.is-on { fill:var(--sp-accent);stroke:var(--sp-accent); }
+.ap-history-row { min-height:60px;padding-top:12px;padding-bottom:12px;border-top:1px solid var(--sp-border);font-size:13px;color:var(--sp-text);transition:background-color .15s ease; }
+.ap-history-row:hover { background:color-mix(in oklab,var(--color-gray-50) 60%,transparent); }
+.dark .ap-history-row:hover { background:color-mix(in oklab,var(--color-gray-900) 20%,transparent); }
+.ap-history-row>span { min-width:0; }
+.ap-history-row strong { display:block;font-size:13px;font-weight:600;color:var(--color-gray-900);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.dark .ap-history-row strong { color:#fff; }
+.ap-history-row small { display:block;margin-top:2px;font-size:12px;color:var(--sp-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.ap-history-row-service small { font-style:italic; }
+.ap-history-row-meta { overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.ap-history-row .ap-history-actions { justify-content:flex-start;gap:6px; }
+.ap-history-row .ap-history-actions :is(button,a) { min-height:32px;padding:0 10px;border:1px solid var(--color-gray-200);border-radius: 10px;transition:background-color .15s ease,color .15s ease,border-color .15s ease; }
+.ap-history-row .ap-history-actions :is(button,a):hover { background:var(--color-maroon-900);border-color:var(--color-maroon-900);color:white;text-decoration:none; }
+.ap-history-row .ap-history-actions :is(button,a):hover svg { color:white; }
+.dark .ap-history-row .ap-history-actions :is(button,a) { border-color:var(--color-gray-600); }
+.dark .ap-history-row .ap-history-actions :is(button,a):hover { background:var(--color-gray-700);border-color:var(--color-gray-600); }
+/* Tablet: drop the Staff · Room column (still in View Details). */
+@media (min-width:768px) and (max-width:1023px) {
+  .ap-history-table-head,.ap-history-row { grid-template-columns:minmax(110px,1fr) minmax(130px,1.3fr) 104px 150px; }
+  .ap-history-table-head>:nth-child(3),.ap-history-row-meta { display:none; }
+}
+.ap-history-pagination { display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 16px 14px;gap:8px; }
+.ap-history-pagination>div { grid-column:2;grid-row:1;display:flex;align-items:center;gap:6px; }
+.ap-history-pagination button,.ap-history-pagination span { min-width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--sp-border);border-radius:7px;font-size:12px;font-weight:600; }
+.ap-history-pagination span { background:var(--color-maroon-800);color:white;border-color:var(--color-maroon-800); }
+.ap-history-pagination button:disabled { opacity:.35;cursor:not-allowed; }
+.ap-history-pagination svg { width:13px;height:13px; }
+.ap-history-pagination small { margin-left:8px;font-size:12px;font-weight:500;color:var(--color-gray-500);white-space:nowrap; }
+.dark .ap-history-pagination small { color:var(--color-gray-400); }
+.ap-history-empty { display:flex;align-items:center;justify-content:center;gap:10px;padding:25px;font-size:13px;color:var(--sp-muted); }
+.ap-history-empty svg { width:22px;height:22px; }
+.ap-policy-note { display:flex;align-items:flex-start;gap:7px;font-size:12px;line-height:1.5;color:var(--sp-muted);padding:0 4px; }
+.ap-policy-note svg { width:14px;height:14px;flex-shrink:0;margin-top:1px; }
+@media (max-width:1199px) {
+  .ap-calendar-grid button { min-height:33px; }
+  .ap-time-grid button { min-height:52px;font-size:12px; }
+  .ap-slots-loading-grid>span { min-height:52px; }
+  .ap-service-list label { min-height:54px; }
+  .ap-service-list strong { font-size:12px; }
+  .ap-service-list small { font-size:12px; }
+  .ap-upcoming-summary { grid-template-columns:55px 1.3fr 1fr 150px;gap:10px; }
+  .ap-upcoming-state { grid-column:2/4;border-left:0;padding-left:0;display:flex;gap:12px;align-items:center; }
+  .ap-upcoming-state p { margin:0; }
+  .ap-upcoming-actions { grid-column:4;grid-row:1/3; }
+  .ap-upcoming-state:empty { display:none; }
+  .ap-hero h1 { font-size:33px; }
+}
+/*
+ * Desktop / laptop: the booking timeline lies down — three equal columns side
+ * by side, with the connector running horizontally from each marker toward the
+ * next step instead of down the left gutter. Tablet and mobile keep the
+ * vertical timeline above.
+ */
+@media (min-width:1024px) {
+  .ap-booking-steps { padding:6px 16px 16px; }
+  .ap-booking-progress { grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;max-width:none; }
+  .ap-booking-progress li { display:flex;flex-direction:column;padding-left:0; }
+  .ap-booking-progress li:not(:last-child)::before { content:none; }
+  /* Marker centred over its column, label underneath. */
+  .ap-step-heading { flex-direction:column;justify-content:center;gap:6px;margin-bottom:12px;text-align:center; }
+  .ap-step-marker { position:relative;flex-shrink:0; }
+  .ap-step-label { max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3; }
+  /* Connector: from the edge of this marker to the edge of the next one —
+     half a column + the 32px gap + half a column, minus both 14px marker
+     radii and a 6px breathing space on each side. */
+  .ap-booking-progress li:not(:last-child)::after { content:'';position:absolute;top:13px;left:calc(50% + 20px);width:calc(100% + 32px - 40px);height:2px;background:var(--sp-border); }
+  .ap-booking-column { display:flex;flex-direction:column;flex:1;max-width:none; }
+  .ap-booking-column>.ap-step-body,.ap-booking-column>.ap-calendar { flex:1; }
+  /* The calendar days and time slots grow to fill their box, so all three
+     columns line up with the tallest one (usually the service list) instead
+     of leaving empty space below the buttons. */
+  .ap-booking-column>.ap-step-body,.ap-calendar { display:flex;flex-direction:column; }
+  .ap-calendar-grid { flex:1;grid-template-rows:auto;grid-auto-rows:minmax(30px,1fr); }
+  .ap-time-grid { flex:1;grid-auto-rows:minmax(46px,1fr); }
+  .ap-service-list { grid-template-columns:minmax(0,1fr);gap:6px; }
+  .ap-summary dl>div { padding:12px 0; }
+}
+@media (max-width:767px) {
+  .ap-service-list .ap-other-service input { width:auto;height:auto;font-size:16px; }
+  .ap-service-list .ap-service-reason input { font-size:16px; }
+  .approved-appointments-page { gap:12px; }
+  /* Full-width toast just under the mobile header. */
+  .ap-toast { top:calc(58px + env(safe-area-inset-top) + 10px);left:12px;right:12px;width:auto; }
+  .ap-hero { min-height:0; }
+  .ap-hero-copy { padding:20px 17px; }
+  .ap-hero h1 { font-size:29px; }
+  .ap-hero-description { font-size:13px;line-height:1.5; }
+  .ap-upcoming-content { padding:4px 13px 14px; }
+  .ap-upcoming-summary { grid-template-columns:50px minmax(0,1fr);gap:12px; }
+  .ap-upcoming-place { grid-column:1/-1;grid-template-columns:1fr 1fr;padding-top:5px; }
+  .ap-upcoming-state { grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:8px; }
+  .ap-upcoming-actions { grid-column:1/-1;grid-row:auto;grid-template-columns:1fr 1fr; }
+  .ap-button { min-height:42px;font-size:12px; }
+  .ap-upcoming-details strong,.ap-upcoming-place strong { font-size:12px; }
+  .ap-upcoming-details small,.ap-upcoming-place small,.ap-upcoming-state p { font-size:12px; }
+  .ap-booking-steps { padding:14px 12px; }
+  .ap-step-body { padding:10px; }
+  .ap-section-heading { padding:12px; }
+  .ap-section-heading h2 { font-size:14px; }
+  .ap-section-heading p { font-size:12px; }
+  .ap-section-heading select { max-width:150px;min-height:34px;font-size:12px; }
+  .ap-step-label { font-size:13px; }
+  .ap-calendar { padding:10px; }
+  .ap-calendar-month button { width:36px;height:36px; }
+  .ap-calendar-grid { gap:3px; }
+  .ap-calendar-grid button { min-height:36px;font-size:12px; }
+  .ap-calendar-weekday { font-size:12px; }
+  .ap-calendar-note { font-size:12px; }
+  .ap-column-caption,.ap-column-footnote { font-size:12px; }
+  .ap-time-grid button { min-height:56px;font-size:12px; }
+  .ap-slots-loading-grid>span { min-height:56px; }
+  .ap-time-grid button>span { font-size:11px; }
+  .ap-service-list label { min-height:60px;padding:10px; }
+  .ap-service-list input { width:14px;height:14px; }
+  .ap-service-list svg { width:16px;height:16px; }
+  .ap-service-list strong { font-size:12px; }
+  .ap-summary dt,.ap-summary-note { font-size:12px; }
+  .ap-summary dd { font-size:14px; }
+  .ap-history-item { flex-wrap:wrap;gap:12px;padding:12px; }
+  .ap-history-side { width:100%;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px; }
+  .ap-history-actions { justify-content:flex-start; }
+  .ap-history-actions button,.ap-history-actions a { min-height:34px; }
+  .ap-history-pagination { padding:10px 12px; }
+  .ap-history .ap-section-heading { flex-wrap:wrap; }
+  .ap-history-controls { gap:6px;width:100%;margin-left:0; }
+  .ap-view-toggle button { height:28px; }
+  /* List layout on phones: stays a real table with fixed-width columns —
+     the column header is kept, and the table scrolls sideways inside its
+     bordered frame instead of stacking or squeezing the rows. */
+  .ap-history-table { margin:4px 12px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#c9bfc2 transparent; }
+  .ap-history-table::-webkit-scrollbar { height:6px; }
+  .ap-history-table::-webkit-scrollbar-thumb { background:#c9bfc2;border-radius:6px; }
+  .dark .ap-history-table { scrollbar-color:#374151 transparent; }
+  .dark .ap-history-table::-webkit-scrollbar-thumb { background:#374151; }
+  .ap-history-table-head,.ap-history-row { grid-template-columns:112px 160px 140px 108px 128px;gap:12px;min-width:max-content;padding-left:12px;padding-right:12px; }
+  .ap-history-table-head>span,.ap-history-row>span { white-space:nowrap; }
+  .ap-policy-note { font-size:12px; }
+}
+
+/* Appointment History search + filter panel — mirrors the Records page's
+   Search and Filter box (gray-50 well, labelled fields, maroon chevrons). */
+.ap-history-filters { display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;margin:4px 16px 12px;padding:16px;border:1px solid var(--sp-border);border-radius: 10px;background:var(--color-gray-50); }
+.dark .ap-history-filters { background:color-mix(in oklab,var(--color-gray-900) 30%,transparent); }
+.ap-history-filters>* { display:block;min-width:0; }
+.ap-history-filters>*>span:first-child { display:block;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--color-gray-600); }
+.dark .ap-history-filters>*>span:first-child { color:var(--color-gray-300); }
+.ap-history-select { position:relative;display:block; }
+.ap-history-select select { width:100%;height:40px;padding:0 40px 0 12px;appearance:none;cursor:pointer;border:1px solid var(--sp-border);border-radius: 10px;background:var(--sp-surface);font-size:14px;color:var(--color-gray-900); }
+.dark .ap-history-select select { color:#fff; }
+.ap-history-select select:focus { outline:none;box-shadow:0 0 0 2px var(--color-maroon-500); }
+.ap-history-filter-reset button { display:flex;width:100%;height:40px;align-items:center;justify-content:center;gap:6px;border:1px solid var(--sp-border);border-radius: 10px;background:var(--sp-surface);font-size:14px;font-weight:600;color:var(--color-gray-700);cursor:pointer;transition:background-color .15s ease; }
+.ap-history-filter-reset button:hover:not(:disabled) { background:var(--color-gray-100); }
+.ap-history-filter-reset button:disabled { opacity:.5;cursor:not-allowed; }
+.ap-history-filter-reset svg { width:15px;height:15px;color:var(--sp-accent); }
+.dark .ap-history-filter-reset button { color:var(--color-gray-300); }
+.dark .ap-history-filter-reset button:hover:not(:disabled) { background:var(--color-gray-700); }
+.ap-history-select svg { position:absolute;right:14px;top:50%;width:16px;height:16px;transform:translateY(-50%);pointer-events:none;color:var(--color-maroon-700); }
+.dark .ap-history-select svg { color:var(--color-gray-400); }
+.ap-history-search .ap-history-filters { margin-bottom:16px; }
+@media (max-width:1023px) { .ap-history-filters { grid-template-columns:1fr 1fr; } .ap-history-filter-search { grid-column:1/-1; } }
+@media (max-width:639px) { .ap-history-filters { grid-template-columns:minmax(0,1fr);margin:4px 12px 12px;padding:12px; } }

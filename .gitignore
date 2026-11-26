@@ -1,0 +1,59 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies and generated output
+node_modules/
+vendor/
+build/
+dist/
+backend/storage/logs/
+backend/storage/framework/cache/
+backend/storage/framework/sessions/
+backend/storage/framework/views/
+*.log
+*.zip
+*.7z
+
+# Local junk / debug artifacts
+backend/diag.php
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+.vs/
+*.txt
+# ...except the crawler rules that ship with the frontend build
+!frontend/public/robots.txt
+# Local audit and performance reports (generated; keep them on disk, not in Git)
+backend/postgres-audit.txt
+docs/bundle-*.json
+docs/performance-*.json
+
+.claude
+
+mydocs - reference-for-deploying-or-uploading-in-file-manager-of-cpanel-in-z.com
+mydocs - reference-for-deploying-in-render-dashboard
+mydocs - reference-for-deploying-in-supabase
+mydocs - reference-for-emailing-of-brevo
+mydocs - discussions/
+mydocs - transcriber/
+mydocs - takenotes/
+mydocs - owasp zap/
+mydocs - notes/
+mydocs - chapter 4 and 5/
+mydocs - chapter 1 to 5
+# School masterlist files (student personal data). Import them in the nurse portal; never commit them.
+/masterlist*.xlsx
+/masterlist*.csv
+
+# Agent temp/working files (scripts, dumps, scratch) — keep on disk, never in Git
+temp/
+
+# Local Supabase database backups (contain user PII / password hashes; never commit)
+/database/supabase_backup_*.json
+CareLink_Demo_Test_Data.docx

@@ -1,0 +1,135 @@
+/*
+ * Student portal outer shell / main frame styles (desktop view).
+ *
+ * Base chrome shared by BOTH view shells. The shells render the same class
+ * names (`.student-sidebar`, `.student-header`, `.student-main`, ...), so
+ * their default rules live here; each shell stylesheet then overrides them
+ * inside its own breakpoint:
+ *   - StudentLayout-for-Tablet-View.css  (>= 768px)
+ *   - StudentLayout-for-Mobile-View-Min-300px.css  (<= 767px)
+ */
+.student-approved-shell {
+  --sp-bg: #f8f5f3; --sp-surface: #fff; --sp-soft: #faeeec; --sp-border: #ebdfe0;
+  --sp-text: #382a2e; --sp-muted: #6f6166; --sp-accent: var(--color-maroon-800); --sp-sidebar: 198px;
+  --sp-nav-height: 0px; --sp-header-height: 62px;
+  background: var(--sp-bg); color: var(--sp-text); min-height:100dvh;overflow-x:hidden;
+}
+.dark .student-approved-shell {
+  --sp-bg: var(--dashboard-bg, #111827);
+  --sp-surface: var(--dashboard-surface, #1f2937);
+  --sp-soft: var(--dashboard-soft, #1f2937);
+  --sp-border: var(--dashboard-outline, #374151);
+  --sp-text: var(--dashboard-text, #f3f4f6);
+  --sp-muted: var(--dashboard-muted, #9ca3af);
+  --sp-accent: var(--dashboard-accent, #f3f4f6);
+}
+.student-approved-shell :is(button,a,input,select,textarea):focus-visible { outline: 2px solid #c85c73; outline-offset: 3px; }
+.student-skip-link { position:fixed;left:12px;top:-70px;z-index:200;padding:12px 18px;background:var(--sp-surface);border-radius: 10px;color:var(--sp-accent); }
+.student-skip-link:focus { top:12px; }
+.student-sidebar { position:fixed;inset:0 auto 0 0;z-index:40;display:flex;flex-direction:column;width:var(--sp-sidebar);overflow:hidden;background:linear-gradient(to bottom,var(--color-maroon-800),var(--color-maroon-900));color:white; }
+/* Faded white sheen at the very top: keeps the top-edge loading bar readable
+   where it crosses the sidebar (the bar is the same maroon as the sidebar's
+   top gradient stop). Sits behind the sidebar's content, above its background. */
+.student-sidebar::before { content:'';position:absolute;top:0;left:0;right:0;height:22px;z-index:-1;background:linear-gradient(to bottom,#ffffff24,transparent);pointer-events:none; }
+.student-sidebar-brand { padding:25px 18px 22px;border-bottom:1px solid #ffffff16; }
+.student-sidebar-brand a { gap:9px; }
+.student-brand-symbol { width:33px;height:33px;flex-shrink:0;color:#fff0ef; }
+.student-sidebar-brand p:first-child { font-size:23px;letter-spacing:-.7px; }
+.student-sidebar-brand p:last-child { margin-top:2px;font-size:12px;text-transform:none;letter-spacing:1px; }
+.student-sidebar-nav { position:relative;flex:1;padding:24px 12px;overflow-y:auto; }
+.student-sidebar-nav>p { display:none; }
+/* Section labels (Management, Record, Account) above each group of links. */
+/* Smaller than the tabs and a neutral gray (still readable on the maroon sidebar) so labels read as headings, not links. */
+.student-nav-section { margin:4px 0 8px;padding:0 12px;font-size:10px;font-weight:700;letter-spacing:.14em;line-height:1.4;text-transform:uppercase;color:rgb(255 255 255 / .5);white-space:nowrap;overflow:hidden;transition:color .18s ease; }
+/* A clear gap between groups. */
+.student-sidebar-nav>a + .student-nav-section { margin-top:26px; }
+.student-sidebar-nav>a { margin-bottom:8px;border-radius: 10px;padding:13px 12px;gap:11px;font-size:13px;min-height:45px;font-weight:500; }
+.student-sidebar-nav>a[aria-current=page] { background:#ffffff20;color:white;box-shadow:none; }
+.student-sidebar-nav>a[aria-current=page] svg { color:white; }
+.student-sidebar-nav>a>svg:last-child:not(:first-child) { display:none; }
+/*
+ * User account button (sidebar foot on tablet / desktop; Settings page on
+ * mobile): avatar + name + course + chevron; opens the account dropdown.
+ */
+.student-account-button { display:flex;width:100%;align-items:center;gap:10px;min-width:0;padding:8px 10px;border:1px solid;border-radius:10px;text-align:left;cursor:pointer;transition:background-color .15s ease,border-color .15s ease; }
+.student-account-avatar { display:flex;flex-shrink:0;align-items:center;justify-content:center;overflow:hidden;border-radius:999px;background:#fbeee9;color:var(--color-maroon-800);font-weight:700; }
+.dark .student-account-avatar { background:#374151;color:#f3f4f6; }
+.student-account-avatar img { width:100%;height:100%;object-fit:cover; }
+.student-account-avatar.is-small { width:32px;height:32px;font-size:12px; }
+.student-account-avatar.is-large { width:48px;height:48px;font-size:14px;box-shadow:0 0 0 2px #fff; }
+.dark .student-account-avatar.is-large { box-shadow:0 0 0 2px #1f2937; }
+.student-account-caption { display:flex;flex:1;min-width:0;flex-direction:column;line-height:1.35; }
+.student-account-caption strong,.student-account-caption small { overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.student-account-caption strong { font-size:13px;font-weight:700; }
+.student-account-caption small { font-size:12px; }
+.student-account-chevron { width:16px;height:16px;flex-shrink:0; }
+/* On the maroon sidebar. */
+.student-account-button.is-sidebar { border-color:#ffffff1f;background:#ffffff12;color:#fff; }
+.student-account-button.is-sidebar:hover { background:#ffffff1f;border-color:#ffffff33; }
+.student-account-button.is-sidebar.is-open { background:#ffffff26;border-color:#ffffff40; }
+.student-account-button.is-sidebar .student-account-avatar { background:#ffffff26;color:#fff;box-shadow:0 0 0 1px #ffffff40; }
+.student-account-button.is-sidebar small { color:#ffffffb3; }
+.student-account-button.is-sidebar .student-account-chevron { color:#ffffffa6; }
+/* In the mobile header: avatar only, a round 44px target next to the
+   outlined bell / theme buttons; the ring turns maroon on hover / open. */
+.student-account-button.is-header { order:3;justify-content:center;gap:0;width:44px;height:44px;padding:0;border-color:var(--sp-border);border-radius:10px;background:var(--sp-surface); }
+.student-account-button.is-header:hover,.student-account-button.is-header.is-open { background:var(--color-gray-100);border-color:var(--color-gray-200); }
+.dark .student-account-button.is-header:hover,.dark .student-account-button.is-header.is-open { background:var(--color-gray-700);border-color:var(--color-gray-600); }
+.student-account-button.is-header:focus-visible { outline:2px solid var(--sp-accent);outline-offset:2px; }
+.student-account-button.is-header :is(.student-account-caption,.student-account-chevron) { display:none; }
+.student-sidebar-campus { position:absolute;bottom:0;left:0;width:100%;height:245px;object-fit:cover;filter:grayscale(1);mix-blend-mode:luminosity;opacity:.16;mask-image:linear-gradient(transparent,#000 35%);pointer-events:none; }
+.student-shell-body { min-height:100dvh;min-width:0;margin-left:var(--sp-sidebar);display:flex;flex-direction:column;padding-bottom:calc(var(--sp-nav-height) + env(safe-area-inset-bottom));background:var(--sp-bg); }
+.student-header { position:fixed;top:0;left:var(--sp-sidebar);right:0;z-index:30;background:linear-gradient(to bottom,var(--color-maroon-50),var(--sp-surface));border-bottom:1px solid var(--sp-border);box-shadow:0 2px 10px #3d12200a; }
+/* Header dark mode uses the global dashboard dark mode in index.css */
+.student-header-inner { height:var(--sp-header-height);display:flex;align-items:center;gap:16px;padding:0 24px; }
+.student-header-page { flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:700;color:var(--sp-accent); }
+.student-old-header-brand,.student-old-header-greeting { display:none; }
+.student-header-actions { display:flex;align-items:center;gap:8px;flex-shrink:0; }
+.student-header-icon { position:relative;align-items:center;justify-content:center;display:flex;width:38px;height:40px;border-radius:9px;color:var(--sp-text);cursor:pointer; }
+.student-header-icon:hover, .student-header-icon.is-open { background:var(--color-gray-100);color:var(--sp-text); }
+.dark .student-header-icon:hover, .dark .student-header-icon.is-open { background:var(--color-gray-700); }
+.student-header-icon svg { width:19px;height:19px; }
+/* Theme toggle + alerts bell: outlined squares at rest (icon + border, no
+   fill); the shared .student-header-icon:hover adds the soft shade fill.
+   Applies to every shell. */
+.student-theme-toggle,.student-notification-bell { width:40px;border:1px solid var(--sp-border);transition:background-color .15s ease,border-color .15s ease,color .15s ease; }
+.student-theme-toggle:hover,.student-notification-bell:hover { border-color:var(--color-gray-200); }
+.dark .student-theme-toggle:hover,.dark .student-notification-bell:hover { border-color:var(--color-gray-600); }
+.student-theme-toggle:focus-visible,.student-notification-bell:focus-visible { outline:2px solid var(--sp-accent);outline-offset:2px; }
+.student-theme-toggle { order:1; }
+.student-notification-bell { order:2; }
+/* Unread count: a compact pill tucked over the bell's top-right, kept INSIDE
+   the button's border. The surface-colored ring separates it from the icon. */
+.student-bell-count { position:absolute;top:-7px;right:-7px;z-index:1;display:flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:#dc2626;color:#fff;font-size:10px;font-weight:700;line-height:1;box-shadow:0 0 0 2px var(--sp-surface);pointer-events:none; }
+.dark .student-bell-count { background:#b91c1c; }
+.student-main { flex:1 0 auto;min-height:100dvh;min-width:0;overflow:visible;overscroll-behavior:contain;padding:calc(var(--sp-header-height) + 16px) 22px 16px;scroll-behavior:smooth;scroll-padding-top:calc(var(--sp-header-height) + 16px); }
+.student-page-content { width:100%;max-width:1440px;margin:0 auto;min-width:0; }
+.student-bottom-nav { display:none; }
+.student-approved-shell .carelink-assistant-dock { bottom:calc(var(--sp-nav-height) + env(safe-area-inset-bottom) + 10px);right:18px;width:52px;height:52px; }
+.student-approved-shell .carelink-assistant-panel { bottom:calc(var(--sp-nav-height) + env(safe-area-inset-bottom) + 78px);right:18px;width:min(380px,calc(100vw - 32px));height:min(510px,calc(100dvh - var(--sp-nav-height) - 150px)); }
+/* The assistant is never hidden by page modals: it keeps its own layer (z-50)
+   and simply sits behind the modal backdrop (z-100), dimmed like the page. */
+/*
+ * Assistant dock: the student can drag it anywhere (--chat-dx/--chat-dy set
+ * inline by ChatWidget). Nothing else on the page moves it.
+ */
+.carelink-assistant-dock { translate:var(--chat-dx,0px) var(--chat-dy,0px);touch-action:none; }
+.carelink-assistant-dock.is-dragging .carelink-assistant-launcher { cursor:grabbing;scale:1.05; }
+/* Small hide (X) chip on the launcher's top-right: revealed on hover or
+   keyboard focus; always visible on touch screens, which have no hover. */
+.carelink-assistant-hide { position:absolute;top:-4px;right:-4px;display:flex;align-items:center;justify-content:center;width:20px;height:20px;border:1px solid #ebdfe0;border-radius:999px;background:#fff;color:#6f6166;box-shadow:0 2px 6px #2a0a1433;cursor:pointer;opacity:0;scale:.8;pointer-events:none;transition:opacity .15s ease,scale .15s ease; }
+.carelink-assistant-hide svg { width:12px;height:12px; }
+.carelink-assistant-hide:hover { background:var(--color-maroon-800);border-color:var(--color-maroon-800);color:#fff; }
+.carelink-assistant-dock:hover .carelink-assistant-hide,.carelink-assistant-dock:focus-within .carelink-assistant-hide { opacity:1;scale:1;pointer-events:auto; }
+.carelink-assistant-dock.is-dragging .carelink-assistant-hide { opacity:0;pointer-events:none; }
+.dark .carelink-assistant-hide { border-color:#374151;background:#1f2937;color:#9ca3af; }
+.dark .carelink-assistant-hide:hover { background:var(--color-maroon-800);border-color:var(--color-maroon-800);color:#fff; }
+@media (hover:none) { .carelink-assistant-hide { opacity:1;scale:1;pointer-events:auto; } }
+
+/*
+ * The tablet / desktop (>= 768px) breakpoints live in
+ * StudentLayout-for-Tablet-View.css, and the mobile (<= 767px) breakpoint
+ * lives in StudentLayout-for-Mobile-View-Min-300px.css. Both are loaded after this
+ * file so the cascade order is preserved.
+ */
+@media (prefers-reduced-motion:reduce) { .student-approved-shell .student-main { scroll-behavior:auto; } }
