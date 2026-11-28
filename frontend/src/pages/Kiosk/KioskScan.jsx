@@ -559,6 +559,13 @@ const KioskScan = ({
         );
       }
 
+      const studentData = response.data.data?.user;
+      if (studentData && (studentData.status === 'archived' || studentData.status === 'inactive' || studentData.is_active === false)) {
+        showError('Account Notice', 'Your student account is currently archived or inactive. Please contact the administrator.');
+        isScanningRef.current = false;
+        return;
+      }
+
       scanCooldownRef.current = true;
 
       setSuccess(true);
@@ -666,6 +673,12 @@ const KioskScan = ({
           response.data?.message ||
             'Student was not found.'
         );
+      }
+
+      const studentData = response.data.data?.user;
+      if (studentData && (studentData.status === 'archived' || studentData.status === 'inactive' || studentData.is_active === false)) {
+        showError('Account Notice', 'Your student account is currently archived or inactive. Please contact the administrator.');
+        return;
       }
 
       setSuccess(true);

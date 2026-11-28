@@ -198,6 +198,7 @@ const KioskConfirm = ({ data, onCheckedIn, onBack, onDone, demoMode = false }) =
     <dl className="divide-y divide-white/10 rounded-[15px] border border-white/10 bg-white/5 px-4 text-sm">
       {[
         ['Name', `${user.first_name} ${user.last_name}`],
+        ['Student ID', user.student_id],
         ['Service', appointment?.service === 'Consultation' ? 'General Consultation' : appointment?.service],
         ['Appointment date', formatAppointmentDate(appointment?.appointment_date)],
         ['Appointment time', appointment?.time_slot],

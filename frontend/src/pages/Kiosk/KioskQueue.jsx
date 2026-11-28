@@ -86,7 +86,7 @@ const KioskQueue = ({ checkin, onDone, demoMode = false }) => {
           <div className="bg-white/5 backdrop-blur-xl rounded-[15px] p-4 border border-white/10">
             <User className="w-5 h-5 text-yellow-300 mx-auto mb-1" />
             <p className="text-white/70 text-xs">Patient</p>
-            <p className="text-white text-sm font-semibold truncate">Your clinic visit</p>
+            <p className="text-white text-sm font-semibold truncate">{checkin.student_id}</p>
           </div>
           <div className="bg-white/5 backdrop-blur-xl rounded-[15px] p-4 border border-white/10">
             <Users className="w-5 h-5 text-yellow-300 mx-auto mb-1" />
